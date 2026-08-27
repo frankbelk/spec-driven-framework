@@ -20,6 +20,8 @@ fi
 : "${OPENROUTER_API_KEY:?OPENROUTER_API_KEY is required}"
 
 LINEAR_URL="https://api.linear.app/graphql"
+# The team to create the issue in. Override with LINEAR_TEAM_ID if needed.
+LINEAR_TEAM_ID="${LINEAR_TEAM_ID:-88ce3c8a-0cfb-419a-b07e-7c86397f086b}"
 
 echo "=== Creating Linear issue for hello world page ==="
 
@@ -27,13 +29,13 @@ echo "=== Creating Linear issue for hello world page ==="
 CREATE_RESPONSE=$(curl -s -X POST "$LINEAR_URL" \
   -H "Authorization: $LINEAR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "query": "mutation IssueCreate($title: String!, $description: String!) { issueCreate(input: { title: $title, description: $description }) { success issue { id identifier title } } }",
-    "variables": {
-      "title": "Create a hello world web page",
-      "description": "Create a simple static HTML page that displays 'Hello, World!'. Entry Point: index.html"
+  -d "{
+    \"query\": \"mutation IssueCreate(\$title: String!, \$description: String!) { issueCreate(input: { teamId: \\\"$LINEAR_TEAM_ID\\\", title: \$title, description: \$description }) { success issue { id identifier title } } }\",
+    \"variables\": {
+      \"title\": \"Create a hello world web page\",
+      \"description\": \"Create a simple static HTML page that displays 'Hello, World!'. Entry Point: index.html\"
     }
-  }')
+  }")
 
 echo "Create response: $CREATE_RESPONSE"
 

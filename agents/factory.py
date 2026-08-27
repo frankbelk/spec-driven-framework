@@ -99,15 +99,23 @@ class AgentFactory:
             description=(
                 "Review Linear Ticket [{ticket_id}]: {ticket_title}\n\n"
                 "Description:\n{ticket_description}\n\n"
-                "Choose the most appropriate tech stack and create an OpenSpec markdown file "
-                "(`spec.md`) with Context, Tech Stack, Dependencies, Functions/Components, "
-                "CLI or UI Contract, and Criteria.\n"
-                "MANDATORY: Include a line formatted exactly as `Entry Point: <filename>`."
+                "Choose the most appropriate tech stack for this ticket and create an OpenSpec "
+                "markdown file (`spec.md`) with Context, Tech Stack, Dependencies, "
+                "Functions/Components, CLI or UI Contract, and Criteria.\n"
+                "IMPORTANT: Follow the tech stack implied by the ticket description. If the ticket "
+                "asks for a web page or static site, choose HTML/CSS/JS and declare "
+                "`Entry Point: index.html`. If it asks for a script, choose the appropriate language.\n"
+                "MANDATORY: Include a line formatted exactly as `Entry Point: <filename>` declaring "
+                "the primary source file with the correct extension for the chosen stack."
             ),
             expected_output="OpenSpec markdown file saved to spec.md with an `Entry Point:` declaration.",
             agent=architect,
             output_file="spec.md",
         )
+
+        # Determine the entry point declared by the architect in spec.md.
+        from tools.file_operations import extract_entry_point
+        entry_point = extract_entry_point("spec.md", default="solution.py")
 
         coder_tasks = []
         tester_tasks = []
@@ -115,21 +123,22 @@ class AgentFactory:
             coder_task = Task(
                 description=(
                     "Read `spec.md` from context and implement the solution.\n"
-                    "Write the complete source code for the entry point file declared in the spec.\n"
+                    f"Write the complete source code for the entry point file `{entry_point}` "
+                    "declared in the spec.\n"
                     "STRICT FORMATTING: Your final answer must be ONLY the raw source code with "
                     "ZERO markdown backticks."
                 ),
-                expected_output="Complete source code saved to the entry point file.",
+                expected_output=f"Complete source code saved to {entry_point}.",
                 agent=coder,
                 context=[architect_task],
-                output_file=f"solution_{i}.py",
+                output_file=entry_point,
             )
             coder_tasks.append(coder_task)
 
         for i, tester in enumerate(testers):
             tester_task = Task(
                 description=(
-                    "Use `Execute Local Script` to run or validate the generated source file.\n"
+                    f"Use `Execute Local Script` to run or validate `{entry_point}`.\n"
                     "If it runs cleanly, output 'STATUS: SUCCESS'. Otherwise output 'STATUS: FAILED' "
                     "followed by the full error log."
                 ),
