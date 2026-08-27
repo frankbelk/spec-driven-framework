@@ -51,7 +51,7 @@ class PipelineRunner:
                  artifact_store: Optional[ArtifactStore] = None,
                  agent_factory: Optional[AgentFactory] = None):
         self.linear = linear_client or LinearClient()
-        self.github = github_ops or GithubOps()
+        self.github = github_ops or GitOps()
         self.artifacts = artifact_store or ArtifactStore()
         self.factory = agent_factory or AgentFactory()
 

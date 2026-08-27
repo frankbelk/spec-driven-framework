@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS Resources Report — spec-driven-framework</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --border: #334155;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --green: #4ade80;
+    --amber: #fbbf24;
+    --red: #f87171;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 2rem;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+  h2 { font-size: 1.3rem; margin: 2rem 0 1rem; color: var(--accent); }
+  .subtitle { color: var(--muted); margin-bottom: 2rem; }
+  .badge {
+    display: inline-block; padding: 0.2rem 0.7rem; border-radius: 999px;
+    font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;
+  }
+  .badge.green { background: rgba(74,222,128,0.15); color: var(--green); }
+  .badge.amber { background: rgba(251,191,36,0.15); color: var(--amber); }
+  .badge.red { background: rgba(248,113,113,0.15); color: var(--red); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+  .stat {
+    background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem;
+    padding: 1.25rem; 
+  }
+  .stat .label { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat .value { font-size: 1.4rem; font-weight: 700; margin-top: 0.25rem; word-break: break-all; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem;
+    padding: 1.25rem; margin-bottom: 1rem;
+  }
+  table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+  th, td { text-align: left; padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+  th { color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
+  code { background: #0b1220; padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-size: 0.85rem; color: var(--accent); }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .footer { margin-top: 3rem; color: var(--muted); font-size: 0.8rem; text-align: center; }
+  .section-note { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>AWS Resources Report</h1>
+  <p class="subtitle">spec-driven-framework — multi-agent SDLC pipeline deployment · Region <code>eu-west-1</code> · Account <code>694758405395</code></p>
+
+  <div class="grid">
+    <div class="stat"><div class="label">CloudFormation Stack</div><div class="value">sdd-pipeline</div></div>
+    <div class="stat"><div class="label">Stack Status</div><div class="value">UPDATE_COMPLETE <span class="badge green">Healthy</span></div></div>
+    <div class="stat"><div class="label">Lambda Function</div><div class="value">sdd-pipeline</div></div>
+    <div class="stat"><div class="label">Package Type</div><div class="value">Image (ECR)</div></div>
+  </div>
+
+  <h2>1. CloudFormation Stack Resources</h2>
+  <div class="card">
+    <p class="section-note">Stack <code>sdd-pipeline</code> — 11 resources, all CREATE/UPDATE_COMPLETE.</p>
+    <table>
+      <thead><tr><th>Logical ID</th><th>Resource Type</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>ApiInvokePermission</td><td>AWS::Lambda::Permission</td><td><span class="badge green">CREATE_COMPLETE</span></td></tr>
+        <tr><td>ArtifactBucket</td><td>AWS::S3::Bucket</td><td><span class="badge green">CREATE_COMPLETE</span></td></tr>
+        <tr><td>LambdaExecutionRole</td><td>AWS::IAM::Role</td><td><span class="badge green">CREATE_COMPLETE</span></td></tr>
+        <tr><td>PipelineApi</td><td>AWS::ApiGateway::RestApi</td><td><span class="badge green">CREATE_COMPLETE</span></td></tr>
+        <tr><td>PipelineApiDeployment</td><td>AWS::ApiGateway::Deployment</td><td><span class="badge green">CREATE_COMPLETE</span></td></tr>
+        <tr><td>PipelineApiMethod</td><td>AWS::ApiGateway::Method</td><td><span class="badge green">CREATE_COMPLETE</span></td></tr>
+        <tr><td>PipelineApiResource</td><td>AWS::ApiGateway::Resource</td><td><span class="badge green">CREATE_COMPLETE</span></td></tr>
+        <tr><td>PipelineApiStage</td><td>AWS::ApiGateway::Stage</td><td><span class="badge green">CREATE_COMPLETE</span></td></tr>
+        <tr><td>PipelineErrorAlarm</td><td>AWS::CloudWatch::Alarm</td><td><span class="badge green">CREATE_COMPLETE</span></td></tr>
+        <tr><td>PipelineFunction</td><td>AWS::Lambda::Function</td><td><span class="badge green">UPDATE_COMPLETE</span></td></tr>
+        <tr><td>PipelineLogGroup</td><td>AWS::Logs::LogGroup</td><td><span class="badge green">CREATE_COMPLETE</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>2. Compute — AWS Lambda</h2>
+  <div class="card">
+    <table>
+      <tbody>
+        <tr><th>Function Name</th><td class="mono">sdd-pipeline</td></tr>
+        <tr><th>Package Type</th><td>Container Image</td></tr>
+        <tr><th>Image URI</th><td class="mono">694758405395.dkr.ecr.eu-west-1.amazonaws.com/sdd-pipeline:20260826215035</td></tr>
+        <tr><th>Memory</th><td>1024 MB</td></tr>
+        <tr><th>Timeout</th><td>900 s (15 min)</td></tr>
+        <tr><th>Execution Role</th><td class="mono">arn:aws:iam::694758405395:role/sdd-pipeline-LambdaExecutionRole-Ni4UZ2m6lz64</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>3. Container Registry — ECR</h2>
+  <div class="card">
+    <table>
+      <tbody>
+        <tr><th>Repository</th><td class="mono">sdd-pipeline</td></tr>
+        <tr><th>URI</th><td class="mono">694758405395.dkr.ecr.eu-west-1.amazonaws.com/sdd-pipeline</td></tr>
+        <tr><th>Image Tag</th><td class="mono">2026-08-26T21:50:35</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>4. API Gateway</h2>
+  <div class="card">
+    <table>
+      <tbody>
+        <tr><th>API Name</th><td class="mono">sdd-pipeline-api</td></tr>
+        <tr><th>API ID</th><td class="mono">71msrdxsaf</td></tr>
+        <tr><th>Stage</th><td class="mono">prod</td></tr>
+        <tr><th>Invoke URL</th><td class="mono">https://71msrdxsaf.execute-api.eu-west-1.amazonaws.com/prod</td></tr>
+        <tr><th>Integration</th><td>AWS_PROXY → Lambda <code>sdd-pipeline</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>5. Storage — S3</h2>
+  <div class="card">
+    <table>
+      <tbody>
+        <tr><th>Bucket</th><td class="mono">sdd-pipeline-artifacts-694758405395</td></tr>
+        <tr><th>Purpose</th><td>Persist pipeline artifacts (spec.md, solution files, test_results, audit_report)</td></tr>
+        <tr><th>Prefix</th><td class="mono">sdd/</td></tr>
+        <tr><th>Public Access</th><td><span class="badge green">Blocked (reverted)</span> — private by default</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>6. Secrets Manager</h2>
+  <div class="card">
+    <table>
+      <tbody>
+        <tr><th>Secret</th><td class="mono">sdd-pipeline-secrets</td></tr>
+        <tr><th>Contents</th><td>OPENROUTER_API_KEY, LINEAR_API_KEY (loaded into Lambda env at cold start)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>7. Monitoring — CloudWatch</h2>
+  <div class="card">
+    <table>
+      <tbody>
+        <tr><th>Log Group</th><td class="mono">/aws/lambda/sdd-pipeline</td></tr>
+        <tr><th>Alarm</th><td class="mono">PipelineErrorAlarm</td></tr>
+        <tr><th>Purpose</th><td>Error alarm on Lambda failures; log streaming for pipeline progress</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>8. IAM</h2>
+  <div class="card">
+    <table>
+      <tbody>
+        <tr><th>Role</th><td class="mono">sdd-pipeline-LambdaExecutionRole</td></tr>
+        <tr><th>Permissions</th><td>Lambda execution, S3 read/write on artifact bucket, Secrets Manager read, CloudWatch logs</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>9. VPC / Networking</h2>
+  <div class="card">
+    <p class="section-note">The pipeline runs as a serverless Lambda function and does <strong>not</strong> require a VPC. It reaches Linear, OpenRouter, and GitHub over the public internet via the Lambda-managed network. No VPC, subnets, or security groups are provisioned.</p>
+  </div>
+
+  <h2>10. External Integrations (non-AWS)</h2>
+  <div class="card">
+    <table>
+      <thead><tr><th>Service</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td>Linear</td><td>Source of truth — issues fetched, execution reports posted as comments</td></tr>
+        <tr><td>OpenRouter</td><td>LLM provider for crewAI agents (Architect, Coder, Tester, Auditor)</td></tr>
+        <tr><td>GitHub</td><td>Version control — feature branches and pull requests (new <code>spec-driven-framework</code> repo)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>10. Architecture Diagram</h2>
+  <div class="card">
+    <pre class="mono" style="background:#0b1220;padding:1rem;border-radius:0.5rem;overflow-x:auto;">
+Linear (source of truth)
+   │  webhook / CLI
+   ▼
+API Gateway (sdd-pipeline-api) ──► Lambda (sdd-pipeline, ECR image)
+   │
+   ▼
+crewAI Agents (Architect, N×Coder, N×Tester, Auditor)
+   │
+   ▼
+ArtifactStore ──► S3 (sdd-pipeline-artifacts-*)
+   │
+   ▼
+GitOps ──► GitHub feature branch + PR
+   │
+   ▼
+LinearClient ──► post execution report comment
+    </pre>
+  </div>
+
+  <div class="footer">
+    Generated automatically by spec-driven-framework · AWS Region eu-west-1 · Account 694758405395
+  </div>
+</div>
+</body>
+</html>
