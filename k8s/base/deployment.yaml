@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sdd-coder-agent
+  labels:
+    app: sdd-coder-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sdd-coder-agent
+  template:
+    metadata:
+      labels:
+        app: sdd-coder-agent
+    spec:
+      containers:
+      - name: coder-agent
+        image: sdd-pipeline/coder-agent:latest
+        env:
+        - name: AGENT_TYPE
+          value: "coder"
+        - name: INSTANCE_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: OPENROUTER_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: sdd-secrets
+              key: OPENROUTER_API_KEY
+        - name: LINEAR_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: sdd-secrets
+              key: LINEAR_API_KEY
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
